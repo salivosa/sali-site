@@ -1,2 +1,2 @@
 # sali-site
-powered by asp. net mvc 5
+powered by asp .net mvc 5
