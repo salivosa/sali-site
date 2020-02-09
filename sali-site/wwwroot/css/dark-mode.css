@@ -1,0 +1,38 @@
+[data-theme="dark"] {
+    background-color: #111 !important;
+    color: #eee;
+}
+
+a.navbar-brand, label.custom-control-label {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    /*-khtml-user-select: none;*/
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: 0;
+}
+
+[data-theme="dark"] a.navbar-brand {
+    color: white;
+}
+
+    [data-theme="dark"] a.navbar-brand:hover {
+        color: gray;
+    }
+
+[data-theme="white"] a.navbar-brand:hover {
+    color: gray;
+}
+
+[data-theme="dark"] .bg-light {
+    color: #eee;
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: #000 !important;
+}
+
+[data-theme="dark"] .bg-black {
+    background-color: #eee !important;
+}

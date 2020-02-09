@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.UI.ViewManagement;
 
 namespace SaliLib
 {
@@ -19,6 +20,17 @@ namespace SaliLib
             dict.Add("user_photo", doc.SelectNodes("//img[@class='photo']").Select(x => x.GetAttributeValue("src", "")).FirstOrDefault());
 
             return dict;
+        }
+
+        public static bool check_dark_mode()
+        {
+            var settings = new UISettings();
+            var foreground = settings.GetColorValue(UIColorType.Foreground).ToString();
+            var background = settings.GetColorValue(UIColorType.Background).ToString();
+
+            bool check = foreground == "#FFFFFFFF" && background == "#FF000000";
+
+            return check;
         }
     }
 }
