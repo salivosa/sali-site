@@ -7,10 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/dark-mode.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="~/favicon.ico" />
 </head>
 
 @{ 
-    bool auto_dark = SaliLib.Configuration.check_dark_mode();
+    bool auto_dark = SaliLib.Configuration.check_dark_mode;
+
 }
 
 <body style='width: 100%;'>
@@ -64,10 +66,9 @@
 </html>
 
 <script>
-    if (localStorage.length === 0 || localStorage.getItem("darkSwitch").valueOf("darkSwitch") !== "white") {
-        if ("@auto_dark" === "True") {
-            document.body.setAttribute("data-theme", "dark");
-            localStorage.setItem("darkSwitch", "dark");
-        }
+    if ("@auto_dark" === "True" && localStorage.length === 0) {
+        document.body.setAttribute("data-theme", "dark");
+        localStorage.setItem("darkSwitch", "dark");
     }
+    
 </script>

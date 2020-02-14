@@ -6,8 +6,11 @@ using Windows.UI.ViewManagement;
 
 namespace SaliLib
 {
-    public static class Configuration
+    public class Configuration
     {
+        public static bool check_dark_mode = _check_dark_mode();
+
+        //get Twitter Data
         public static Dictionary<string, object> get_Twitter_data(string id)
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
@@ -22,7 +25,8 @@ namespace SaliLib
             return dict;
         }
 
-        public static bool check_dark_mode()
+        //Get if Windows OS has dark theme on
+        public static bool _check_dark_mode()
         {
             var settings = new UISettings();
             var foreground = settings.GetColorValue(UIColorType.Foreground).ToString();
