@@ -17,9 +17,9 @@ a.navbar-brand, label.custom-control-label {
     color: white;
 }
 
-    [data-theme="dark"] a.navbar-brand:hover {
-        color: gray;
-    }
+[data-theme="dark"] a.navbar-brand:hover {
+    color: gray;
+}
 
 [data-theme="white"] a.navbar-brand:hover {
     color: gray;

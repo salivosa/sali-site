@@ -10,11 +10,6 @@
     <link rel="shortcut icon" href="~/favicon.ico" />
 </head>
 
-@{ 
-    bool auto_dark = SaliLib.Configuration.check_dark_mode;
-
-}
-
 <body style='width: 100%;'>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -64,11 +59,3 @@
     @RenderSection("Scripts", required: false)
 </body>
 </html>
-
-<script>
-    if ("@auto_dark" === "True" && localStorage.length === 0) {
-        document.body.setAttribute("data-theme", "dark");
-        localStorage.setItem("darkSwitch", "dark");
-    }
-    
-</script>
