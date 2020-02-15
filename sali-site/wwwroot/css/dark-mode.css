@@ -25,6 +25,14 @@ a.navbar-brand, label.custom-control-label {
     color: gray;
 }
 
+[data-theme="dark"] .fa {
+    color: gray;
+}
+
+[data-theme="dark"] .fa:hover {
+    color: darkgray;
+}
+
 [data-theme="dark"] .bg-light {
     color: #eee;
 }

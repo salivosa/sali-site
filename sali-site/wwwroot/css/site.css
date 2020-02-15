@@ -12,6 +12,51 @@ a {
   color: #0366d6;
 }
 
+.fa {
+    font-size: 36px;
+    padding: 10px;
+}
+
+.fa.fa-twitter {
+    color: #1A91DA;
+}
+
+.fa.fa-twitter:hover {
+    color: deepskyblue;
+}
+
+.fa.fa-youtube {
+    color: #F80000;
+}
+
+.fa.fa-youtube:hover {
+    color: indianred;
+}
+
+.fa.fa-discord {
+    color: gray;
+}
+
+.fa.fa-discord:hover {
+    color: lightslategray;
+}
+
+.fa.fa-github {
+    color: black;
+}
+
+.fa.fa-github:hover {
+    color: dimgray;
+}
+
+.fa.fa-envelope {
+    color: cadetblue;
+}
+
+.fa.fa-envelope:hover {
+    color: powderblue;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
