@@ -29,7 +29,6 @@ namespace sali_site.Controllers
             var content = Configuration.get_Twitter_data(TwitterUserId);
 
             ViewData["user_title"] = content["user_title"];
-            ViewData["username"] = content["username"];
             ViewData["user_photo"] = content["user_photo"];
             ViewData["twitter_page"] = content["twitter_page"];
 

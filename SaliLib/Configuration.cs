@@ -15,12 +15,10 @@ namespace SaliLib
 
             var dict = new Dictionary<string, object>()
             {
-                { "username", doc.SelectNodes("//span[@class='nickname']").Select(x => x.InnerText.Trim()).FirstOrDefault() },
                 { "user_title", doc.SelectNodes("//a[@rel='me']").Select(x => x.InnerText.Replace("\n", "").Trim()).FirstOrDefault() },
+                { "twitter_page", "https://twitter.com/" + doc.SelectNodes("//span[@class='nickname']").Select(x => x.InnerText.Trim()).FirstOrDefault().Replace("@", "") },
                 { "user_photo", doc.SelectNodes("//img[@class='photo']").Select(x => x.GetAttributeValue("src", "")).FirstOrDefault() }
             };
-
-            dict.Add("twitter_page", "https://twitter.com/" + dict["username"].ToString().Replace("@", ""));
 
             return dict;
         }
