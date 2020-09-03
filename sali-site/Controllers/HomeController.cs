@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -16,21 +17,39 @@ namespace sali_site.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
+
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
+
+            if (twitter_data == null)
+            {
+                //Timer for update variable every 60 minutes
+                var aTimer = new Timer(60 * 60 * 1000);
+                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                aTimer.Start();
+            }
+        }
+
+        private static Dictionary<string, object> twitter_data { get; set; }
+
+        //Every hour, update variable twitter_data
+        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            twitter_data = Configuration.get_Twitter_data(twitter_data["user_id"].ToString());
         }
 
         public IActionResult Index()
         {
             var TwitterUserId = _configuration.GetSection("Twitter ID").Get<string>();
-            
-            var content = Configuration.get_Twitter_data(TwitterUserId);
 
-            ViewData["user_title"] = content["user_title"];
-            ViewData["user_photo"] = content["user_photo"];
-            ViewData["twitter_page"] = content["twitter_page"];
+            if (twitter_data == null)
+                twitter_data = Configuration.get_Twitter_data(TwitterUserId);
+
+            ViewData["user_title"] = twitter_data["user_title"];
+            ViewData["user_photo"] = twitter_data["user_photo"];
+            ViewData["twitter_page"] = twitter_data["twitter_page"];
 
             ViewData["youtube_url"] = _configuration.GetSection("Youtube").Get<string>();
             ViewData["discord_url"] = _configuration.GetSection("Discord").Get<string>();
@@ -40,9 +59,10 @@ namespace sali_site.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        public void RefreshTwitterData()
         {
-            return View();
+            twitter_data = Configuration.get_Twitter_data(twitter_data["user_id"].ToString());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
