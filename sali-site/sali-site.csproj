@@ -27,12 +27,6 @@
     <ProjectReference Include="..\SaliLib\SaliLib.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="chromedriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 
 
 </Project>
