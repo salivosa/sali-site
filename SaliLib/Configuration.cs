@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Configuration;
 using TwitterOps;
+using CodificacionBinariaLib;
 
 namespace SaliLib
 {
@@ -21,17 +22,21 @@ namespace SaliLib
         //get Twitter Data
         public Dictionary<string, object> get_Twitter_data(string id)
         {
-
             var user = ops.Users.GetUserById(id);
 
             var dict = new Dictionary<string, object>()
             {
-                { "user_title", user.username },
+                { "user_title", user.name },
                 { "twitter_page", "https://twitter.com/" +  user.username },
                 { "user_photo", user.profile_image_url }
             };
 
             return dict;
+        }
+
+        public static string unencrypt_key(string encrypted_key)
+        {
+            return Manejador_Binario.obtenerCadenaLiteral(encrypted_key);
         }
     }
 }

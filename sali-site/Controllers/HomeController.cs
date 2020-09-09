@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -17,7 +18,7 @@ namespace sali_site.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-        private static Configuration config { get; set; }
+        private static SaliLib.Configuration config { get; set; }
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
@@ -26,7 +27,7 @@ namespace sali_site.Controllers
 
             if (config == null)
             {
-                config = new Configuration(_configuration.GetSection("consumerKey").Get<string>(), _configuration.GetSection("consumerSecret").Get<string>(), _configuration.GetSection("tokenValue").Get<string>(), _configuration.GetSection("tokenSecret").Get<string>());
+                config = new SaliLib.Configuration(SaliLib.Configuration.unencrypt_key(_configuration["consumerKey"]), SaliLib.Configuration.unencrypt_key(_configuration["consumerSecret"]), SaliLib.Configuration.unencrypt_key(_configuration["tokenValue"]), SaliLib.Configuration.unencrypt_key(_configuration["tokenSecret"]));
 
                 //Useful timer i might use later
 
@@ -46,7 +47,7 @@ namespace sali_site.Controllers
 
         public IActionResult Index()
         {
-            var TwitterUserId = _configuration.GetSection("Twitter ID").Get<string>();
+            var TwitterUserId = SaliLib.Configuration.unencrypt_key(_configuration["Twitter ID"]);
 
             var twitter_data = config.get_Twitter_data(TwitterUserId);
 
@@ -54,10 +55,10 @@ namespace sali_site.Controllers
             ViewData["user_photo"] = twitter_data["user_photo"];
             ViewData["twitter_page"] = twitter_data["twitter_page"];
 
-            ViewData["youtube_url"] = _configuration.GetSection("Youtube").Get<string>();
-            ViewData["discord_url"] = _configuration.GetSection("Discord").Get<string>();
-            ViewData["github_url"] = _configuration.GetSection("Github").Get<string>();
-            ViewData["email"] = _configuration.GetSection("Mail").Get<string>();
+            ViewData["youtube_url"] = _configuration["Youtube"];
+            ViewData["discord_url"] = _configuration["Discord"];
+            ViewData["github_url"] = _configuration["Github"];
+            ViewData["email"] = _configuration["Mail"];
 
             return View();
         }
