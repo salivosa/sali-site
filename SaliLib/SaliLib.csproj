@@ -8,7 +8,7 @@
     <PackageReference Include="CodificacionBinariaLib" Version="1.0.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.24" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-    <PackageReference Include="TwitterOps" Version="1.0.2" />
+    <PackageReference Include="TwitterOps" Version="1.0.3" />
   </ItemGroup>
 
 </Project>

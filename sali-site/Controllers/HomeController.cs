@@ -19,6 +19,7 @@ namespace sali_site.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
         private static SaliLib.Configuration config { get; set; }
+        private static Timer aTimer { get; set; }
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
@@ -29,25 +30,25 @@ namespace sali_site.Controllers
             {
                 config = new SaliLib.Configuration(SaliLib.Configuration.unencrypt_key(_configuration["consumerKey"]), SaliLib.Configuration.unencrypt_key(_configuration["consumerSecret"]), SaliLib.Configuration.unencrypt_key(_configuration["tokenValue"]), SaliLib.Configuration.unencrypt_key(_configuration["tokenSecret"]));
 
-                //Useful timer i might use later
-
-                //Timer for update variable every 60 minutes
-                //var aTimer = new Timer(60 * 60 * 1000);
-                //aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                //aTimer.Start();
+                //Timer for running method every minute
+                aTimer = new Timer(60000);
+                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                aTimer.Start();
             }
         }
 
-        private static Dictionary<string, object> twitter_data { get; set; }
-
-        //Task which will be handly in a future
-        private static void OnTimedEvent(object source, ElapsedEventArgs e)
+        private async void OnTimedEvent(object source, ElapsedEventArgs e)
         {
+            aTimer.Enabled = false;
+
+            await config.twitter_bot_handler();
+
+            aTimer.Enabled = true;
         }
 
         public IActionResult Index()
         {
-            var TwitterUserId = SaliLib.Configuration.unencrypt_key(_configuration["Twitter ID"]);
+            var TwitterUserId = _configuration["Twitter ID"];
 
             var twitter_data = config.get_Twitter_data(TwitterUserId);
 
@@ -63,11 +64,13 @@ namespace sali_site.Controllers
             return View();
         }
 
+        /*
         [HttpGet]
         public void RefreshTwitterData()
         {
 
         }
+        */
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

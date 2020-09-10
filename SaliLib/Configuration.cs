@@ -8,6 +8,7 @@ using System.Threading;
 using System.Configuration;
 using TwitterOps;
 using CodificacionBinariaLib;
+using System.Threading.Tasks;
 
 namespace SaliLib
 {
@@ -37,6 +38,23 @@ namespace SaliLib
         public static string unencrypt_key(string encrypted_key)
         {
             return Manejador_Binario.obtenerCadenaLiteral(encrypted_key);
+        }
+
+        public async Task twitter_bot_handler()
+        {
+            try
+            {
+                var response = await ops.Tweets.IsLastMentionRepliedByLoggedUserAsync();
+
+                if (!response.Item1)
+                {
+                    await ops.Tweets.PostReplyTweetAsync(response.Item2.tweet_message, response.Item2);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }
