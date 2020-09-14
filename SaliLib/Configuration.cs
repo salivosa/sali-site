@@ -9,12 +9,13 @@ using System.Configuration;
 using TwitterOps;
 using CodificacionBinariaLib;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace SaliLib
 {
     public class Configuration
     {
-        private static Operations ops { get; set; }
+        public static Operations ops { get; set; }
         public Configuration(string consumerKey, string consumerSecret, string tokenValue, string tokenSecret)
         {
             ops = new Operations(consumerKey, consumerSecret, tokenValue, tokenSecret);
@@ -40,16 +41,24 @@ namespace SaliLib
             return Manejador_Binario.obtenerCadenaLiteral(encrypted_key);
         }
 
-        public async Task twitter_bot_handler()
+        public async Task keep_session_alive()
+        {
+            string url = "http://salivosa.xyz";
+
+            var client = new HttpClient();
+
+            await client.GetAsync(url);
+        }
+
+        public void twitter_bot_handler()
         {
             try
             {
-                var response = await ops.Tweets.IsLastMentionRepliedByLoggedUserAsync();
+                var response = ops.Tweets.IsLastMentionRepliedByLoggedUser();
 
                 if (!response.Item1)
-                {
-                    await ops.Tweets.PostReplyTweetAsync(response.Item2.tweet_message, response.Item2);
-                }
+                    ops.Tweets.PostReplyTweet(response.Item2.tweet_message, response.Item2);
+                
             }
             catch (Exception)
             {

@@ -19,7 +19,8 @@ namespace sali_site.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
         private static SaliLib.Configuration config { get; set; }
-        private static Timer aTimer { get; set; }
+        private static Timer timer_twitter { get; set; }
+        private static Timer timer_session_alive { get; set; }
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
@@ -30,20 +31,22 @@ namespace sali_site.Controllers
             {
                 config = new SaliLib.Configuration(SaliLib.Configuration.unencrypt_key(_configuration["consumerKey"]), SaliLib.Configuration.unencrypt_key(_configuration["consumerSecret"]), SaliLib.Configuration.unencrypt_key(_configuration["tokenValue"]), SaliLib.Configuration.unencrypt_key(_configuration["tokenSecret"]));
 
-                //Timer for running method every minute
-                aTimer = new Timer(60000);
-                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                aTimer.Start();
-            }
-        }
+                //Twitter Timer
+                timer_twitter = new Timer();
 
-        private async void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-            aTimer.Enabled = false;
+                timer_twitter.Interval = 30000;
+                timer_twitter.Elapsed += checkTwitter;
 
-            await config.twitter_bot_handler();
+                timer_twitter.Enabled = true;
 
-            aTimer.Enabled = true;
+                //Keep Session Alive Timer
+                timer_session_alive = new Timer();
+
+                timer_session_alive.Interval = 600000;
+                timer_session_alive.Elapsed += keepSessionAlive;
+
+                timer_session_alive.Enabled = true;
+            }  
         }
 
         public IActionResult Index()
@@ -62,6 +65,28 @@ namespace sali_site.Controllers
             ViewData["email"] = _configuration["Mail"];
 
             return View();
+        }
+
+        private void checkTwitter(object sender, ElapsedEventArgs e)
+        {
+            timer_twitter.Enabled = false;
+
+            config.twitter_bot_handler();
+            GC.Collect();
+
+            timer_twitter.Enabled = true;
+
+        }
+
+        private async void keepSessionAlive(object sender, ElapsedEventArgs e)
+        {
+            timer_session_alive.Enabled = false;
+
+            await config.keep_session_alive();
+            GC.Collect();
+
+            timer_session_alive.Enabled = true;
+
         }
 
         /*
