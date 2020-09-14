@@ -34,7 +34,7 @@ namespace sali_site.Controllers
                 //Twitter Timer
                 timer_twitter = new Timer();
 
-                timer_twitter.Interval = 30000;
+                timer_twitter.Interval = int.Parse(_configuration["TwitterTimer"]);
                 timer_twitter.Elapsed += checkTwitter;
 
                 timer_twitter.Enabled = true;
@@ -42,7 +42,7 @@ namespace sali_site.Controllers
                 //Keep Session Alive Timer
                 timer_session_alive = new Timer();
 
-                timer_session_alive.Interval = 600000;
+                timer_session_alive.Interval = int.Parse(_configuration["KeepSessionAliveTimer"]);
                 timer_session_alive.Elapsed += keepSessionAlive;
 
                 timer_session_alive.Enabled = true;
@@ -51,7 +51,7 @@ namespace sali_site.Controllers
 
         public IActionResult Index()
         {
-            var TwitterUserId = _configuration["Twitter ID"];
+            var TwitterUserId = _configuration["TwitterID"];
 
             var twitter_data = config.get_Twitter_data(TwitterUserId);
 
