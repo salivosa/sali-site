@@ -18,25 +18,22 @@ namespace sali_site.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-        private static SaliLib.Configuration config { get; set; }
+        private static Dictionary<string,string> dict { get; set; }
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
             _configuration = configuration;
-
-            if (config == null)
-            {
-                
-            }  
         }
 
         public IActionResult Index()
         {
- 
-            ViewData["user_title"] = _configuration["twitter_user_title"];
-            ViewData["user_photo"] = _configuration["twitter_user_photo"];
-            ViewData["twitter_page"] = _configuration["twitter_page"];
+            if (dict == null)
+                dict = SaliLib.Configuration.GetTwitterData(_configuration["twitter_id"]);
+
+            ViewData["user_title"] = dict["twitter_nickname"];
+            ViewData["user_photo"] = dict["twitter_image"];
+            ViewData["twitter_page"] = dict["twitter_url"];
 
             ViewData["youtube_url"] = _configuration["Youtube"];
             ViewData["discord_url"] = _configuration["Discord"];
